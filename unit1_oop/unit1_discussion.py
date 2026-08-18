@@ -25,7 +25,17 @@ from copy import copy, deepcopy
 # Replace the pass statement with your implementation.
 
 class ParentClass:
-    pass
+    sport_category = "Athlete"
+
+    def __init__(self, name, team):
+        self.name = name
+        self.team = team
+
+    def display_info(self):
+        return (
+            f"Name: {self.name}, Team: {self.team}, "
+            f"Category: {self.sport_category}"
+        )
 
 
 # TODO 2:
@@ -41,8 +51,55 @@ class ParentClass:
 # Replace the pass statement with your implementation.
 
 class ChildClass(ParentClass):
-    pass
+    league_name = "World Basketball League"
 
+    def __init__(self, name, team, position, jersey_number):
+        super().__init__(name, team)
+        self.position = position
+        self.jersey_number = jersey_number
+        self.game_stats = []
+
+    def record_game(self, opponent, points):
+        # Handle a missing opponent or invalid point total.
+        if not opponent:
+            print("Game not recorded: opponent cannot be empty.")
+            return
+
+        if points < 0:
+            print("Game not recorded: points cannot be negative.")
+            return
+
+        game = {
+            "opponent": opponent,
+            "points": points
+        }
+
+        self.game_stats.append(game)
+        print(
+            f"Recorded game against {opponent}: "
+            f"{points} points."
+        )
+
+    #  extension that calculates scoring average.
+    def calculate_scoring_average(self):
+        if len(self.game_stats) == 0:
+            return 0
+
+        total_points = 0
+
+        for game in self.game_stats:
+            total_points += game["points"]
+
+        return total_points / len(self.game_stats)
+
+    def display_info(self):
+        return (
+            f"Name: {self.name}, Team: {self.team}, "
+            f"Position: {self.position}, "
+            f"Jersey Number: {self.jersey_number}, "
+            f"League: {self.league_name}, "
+            f"Games Recorded: {len(self.game_stats)}"
+        )
 
 # TODO 3:
 # Create a function that demonstrates class namespaces and instance namespaces.
@@ -57,7 +114,37 @@ class ChildClass(ParentClass):
 
 def demonstrate_namespaces():
     print("\n=== Namespace Demonstration ===")
-    print("TODO: Implement namespace demonstration")
+
+    player1 = ChildClass(
+        "Jordan",
+        "Canada Team",
+        "Point Guard",
+        3
+    )
+
+    player2 = ChildClass(
+        "Cameron",
+        "Canada Team",
+        "Center",
+        24
+    )
+
+    print(
+        "League accessed through the class:",
+        ChildClass.league_name
+    )
+
+    print(
+        "League accessed through an object:",
+        player1.league_name
+    )
+
+    # The captain attribute is added only to player1.
+    player1.captain = True
+
+    print("Player 1 instance namespace:", player1.__dict__)
+    print("Player 2 instance namespace:", player2.__dict__)
+    print("ChildClass namespace:", ChildClass.__dict__)
 
 
 # TODO 4:
@@ -73,7 +160,29 @@ def demonstrate_namespaces():
 
 def demonstrate_copying():
     print("\n=== Copy Demonstration ===")
-    print("TODO: Implement shallow copy and deep copy demonstration")
+
+    original_player = ChildClass(
+        "Taylor",
+        "Australia Team",
+        "Shooting Guard",
+        11
+    )
+
+    original_player.record_game("New Zealand Team", 18)
+
+    shallow_player = copy(original_player)
+    deep_player = deepcopy(original_player)
+
+    # A shallow copy creates a new player object but continues
+    # sharing the nested game_stats list with the original.
+    original_player.record_game("Sudan Team", 22)
+
+    #A deep copy creates a new player object with independent
+    # nested data, so the added game does not appear in it.
+    print("Original game statistics:", original_player.game_stats)
+    print("Shallow copy statistics:", shallow_player.game_stats)
+    print("Deep copy statistics:", deep_player.game_stats)
+
 
 
 # TODO 5:
@@ -89,12 +198,54 @@ def demonstrate_copying():
 def main():
     print("=== Unit 1 OOP Assignment ===")
 
-    print("\nTODO: Create and test your parent object")
+    print("\n=== Parent Object Test ===")
+    athlete = ParentClass("Morgan", "USA TEAM")
+    print(athlete.display_info())
 
-    print("\nTODO: Create and test your child object")
+    print("\n=== Child Object Test ===")
+    basketball_player = ChildClass(
+        "Devin",
+        "USA Team",
+        "Point Guard",
+        5
+    )
+
+    print(basketball_player.display_info())
+
+    basketball_player.record_game("Australia Team", 16)
+    basketball_player.record_game("New Zealand Team", 24)
+
+    print(
+        f"Scoring average: "
+        f"{basketball_player.calculate_scoring_average():.1f} points"
+    )
+
+    print("\n=== Edge-Case Tests ===")
+
+    # Test a missing opponent.
+    basketball_player.record_game("", 12)
+
+    # Test an invalid negative point value.
+    basketball_player.record_game("Sudan Team", -5)
+
+    # Test the average calculation with no recorded games.
+    new_player = ChildClass(
+        "Alex",
+        "New Zealand Team",
+        "Forward",
+        12
+    )
+
+    print(
+        f"Average with no games: "
+        f"{new_player.calculate_scoring_average():.1f} points"
+    )
+
 
     demonstrate_namespaces()
     demonstrate_copying()
+
+
 
 
 if __name__ == "__main__":
