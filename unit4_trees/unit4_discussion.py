@@ -17,14 +17,20 @@ class Node:
         # TODO (Student):
         # Store the node's value and initialize references
         # to the left and right child nodes.
-        pass
+
+        # Each node stores one value and starts without children.
+        self.value = value
+        self.left = None
+        self.right = None
 
 
 class BST:
     def __init__(self):
         # TODO (Student):
         # Initialize an empty Binary Search Tree.
-        pass
+
+        # An empty BST does not have a root node yet.
+        self.root = None
 
     def insert(self, value):
         """
@@ -37,7 +43,11 @@ class BST:
           whether a value is smaller or larger than the
           current node.
         """
-        pass
+
+        # The recursive helper begins at the root.
+        # Smaller values move left and larger values move right.
+
+        self.root = self._insert_recursive(self.root, value)
 
     def _insert_recursive(self, node, value):
         """
@@ -50,7 +60,20 @@ class BST:
         - Insert larger values into the right subtree.
         - Return the updated node reference.
         """
-        pass
+        # If an empty position is reached, create the new node here.
+        if node is None:
+            return Node(value)
+
+        # Values smaller than the current node belong on the left.
+        if value < node.value:
+            node.left = self._insert_recursive(node.left, value)
+
+        # Values larger than the current node belong on the right.
+        elif value > node.value:
+            node.right = self._insert_recursive(node.right, value)
+
+        # Duplicate values are ignored in this implementation.
+        return node
 
     def search(self, value):
         """
@@ -63,14 +86,33 @@ class BST:
         - Add comments explaining why BST search is often
           more efficient than linear search.
         """
-        pass
+        # A BST can reduce the search space after each comparison.
+        # Instead of checking every node, the search chooses either
+        # the left or right subtree based on the value being searched.
+
+        return self._search_recursive(self.root, value)
 
     def _search_recursive(self, node, value):
         """
         TODO (Student):
         Implement recursive BST search.
         """
-        pass
+
+        # If the search reaches an empty position, the value is absent.
+        if node is None:
+            return False
+
+        # If the current node matches, the search is complete.
+        if value == node.value:
+            return True
+
+        # Smaller values can only exist in the left subtree.
+        if value < node.value:
+            return self._search_recursive(node.left, value)
+
+        # Larger values can only exist in the right subtree.
+        return self._search_recursive(node.right, value)
+
 
     def inorder(self):
         """
@@ -78,7 +120,10 @@ class BST:
         Return a list containing the values from an
         in-order traversal.
         """
-        pass
+
+        values = []
+        self._inorder_recursive(self.root, values)
+        return values
 
     def _inorder_recursive(self, node, values):
         """
@@ -92,7 +137,15 @@ class BST:
         - Add comments explaining why this traversal
           produces sorted output in a BST.
         """
-        pass
+        if node is not None:
+            # In-order traversal follows left, node, right.
+            # Since smaller values are stored on the left and larger
+            # values are stored on the right, this produces sorted output.
+
+            self._inorder_recursive(node.left, values)
+            values.append(node.value)
+            self._inorder_recursive(node.right, values)
+
 
 
 def main():
@@ -110,8 +163,22 @@ def main():
     # 4. Display the values inserted.
     # 5. Use comments to explain why a BST is efficient at reducing search space for each step.
 
-    print("\n=== TREE CONSTRUCTION ===")
-    print("TODO: Create a BST and insert multiple values.")
+    print("\n=== ASVAB SCORE TREE CONSTRUCTION ===")
+
+    score_tree = BST()
+
+    # These example ASVAB scores create values in both the
+    # left and right subtrees of the BST.
+    asvab_scores = [65, 42, 78, 31, 55, 72, 91]
+
+    for score in asvab_scores:
+        score_tree.insert(score)
+
+    # A BST can reduce the search space after each comparison.
+    # If the target score is lower than the current score, the
+    # right subtree can be ignored. If it is higher, the left
+    # subtree can be ignored.
+    print("ASVAB scores inserted:", asvab_scores)
 
     # ===============================
     # TODO (Student): IN-ORDER TRAVERSAL
@@ -124,7 +191,11 @@ def main():
     #    sorted output in a BST.
 
     print("\n=== IN-ORDER TRAVERSAL ===")
-    print("TODO: Display and explain traversal results.")
+
+    # In-order traversal visits the left subtree, current node,
+    # and right subtree, which returns the ASVAB scores in
+    # ascending numerical order.
+    print("ASVAB scores in sorted order:", score_tree.inorder())
 
     # ===============================
     # TODO (Student): SEARCH TESTS
@@ -136,7 +207,16 @@ def main():
     # 3. Use comments to clearly explain the results.
 
     print("\n=== SEARCH TESTS ===")
-    print("TODO: Demonstrate BST searching.")
+
+    # These scores were inserted into the tree, so the searches
+    # should return True.
+    print("Search for score 55:", score_tree.search(55))
+    print("Search for score 72:", score_tree.search(72))
+
+    # These scores were not inserted, so the searches
+    # should return False.
+    print("Search for score 40:", score_tree.search(40))
+    print("Search for score 99:", score_tree.search(99))
 
     # ===============================
     # TODO (Student): EDGE CASES
@@ -153,9 +233,21 @@ def main():
     # Use comments to explain what happens and why.
 
     print("\n=== EDGE CASES ===")
-    print("TODO: Demonstrate and explain an edge case.")
 
+    empty_score_tree = BST()
 
+    # Traversing an empty BST returns an empty list because
+    # no ASVAB scores have been inserted.
+    print("Empty score tree traversal:", empty_score_tree.inorder())
+
+    # Searching an empty tree immediately returns False.
+    print("Search empty score tree for 65:", empty_score_tree.search(65))
+
+    # Duplicate scores are ignored by this implementation because
+    # values are only inserted when they are strictly smaller
+    # or larger than the current node.
+    score_tree.insert(65)
+    print("After attempting duplicate score 65:", score_tree.inorder())
 
 if __name__ == "__main__":
     main()
