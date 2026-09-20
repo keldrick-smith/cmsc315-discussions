@@ -16,7 +16,6 @@ clearly communicates what your program is doing at each step.
 ----------------------------------------------------
 """
 
-
 def main():
     print("=== UNIT 6: DICTIONARIES AS HASH TABLES ===")
 
@@ -33,7 +32,21 @@ def main():
 
 
     print("\n=== INSERT OPERATIONS ===")
-    print("TODO: Create a dictionary and add multiple key-value pairs.")
+
+    # This dictionary works like a hash table by storing
+    # reservation names as keys and party sizes as values.
+    # Each key must be unique and can be used to quickly
+    # access the value connected to that key.
+    reservations = {}
+
+    reservations["Smith"] = 4
+    reservations["Terry"] = 2
+    reservations["Green"] = 6
+    reservations["Buford"] = 3
+    reservations["Woods"] = 5
+
+    print("Current reservations:")
+    print(reservations)
 
     # ===============================
     # TODO (Student): LOOKUP OPERATIONS
@@ -45,7 +58,12 @@ def main():
     # 3. Add meaningful comments to explain how the lookup works.
 
     print("\n=== LOOKUP OPERATIONS ===")
-    print("TODO: Demonstrate successful key lookups.")
+
+    # A dictionary lookup uses the key to find the value
+    # associated with that reservation.
+
+    print("Smith reservation party size:", reservations["Smith"])
+    print("Green reservation party size:", reservations["Green"])
 
     # ===============================
     # TODO (Student): UPDATE OPERATIONS
@@ -58,7 +76,18 @@ def main():
     #    a new value.
 
     print("\n=== UPDATE OPERATIONS ===")
-    print("TODO: Demonstrate updating an existing key.")
+
+    print("Before update:")
+    print(reservations)
+
+    # Since "Terry" already exists as a key, assigning a new
+    # value updates the existing reservation instead of creating
+    # a duplicate key.
+
+    reservations["Terry"] = 4
+
+    print("After updating Terry's party size:")
+    print(reservations)
 
     # ===============================
     # TODO (Student): DELETE OPERATIONS
@@ -70,7 +99,15 @@ def main():
     # 3. Use comments to explain what happens when a key is removed.
 
     print("\n=== DELETE OPERATIONS ===")
-    print("TODO: Demonstrate deleting a key-value pair.")
+
+    print("Before deletion:")
+    print(reservations)
+
+    # Removing a key also removes the value associated with it.
+    del reservations["Buford"]
+
+    print("After deleting Buford's reservation:")
+    print(reservations)
 
     # ===============================
     # TODO (Student): EDGE CASES
@@ -87,9 +124,19 @@ def main():
     # Explain what happens in each case.
 
     print("\n=== EDGE CASES ===")
-    print("TODO: Demonstrate and explain edge cases.")
 
+    # Edge case 1: Looking up a missing key with get().
+    # get() safely returns a default value instead of causing an error.
+    missing_reservation = reservations.get("Taylor", "Reservation not found")
+    print("Looking up Taylor:", missing_reservation)
 
+    # Edge case 2: Safely removing a key that does not exist.
+    # pop() can use a default value so the program does not crash.
+    removed_reservation = reservations.pop("Anderson", "Reservation not found")
+    print("Removing Anderson:", removed_reservation)
+
+    print("\nFinal reservations:")
+    print(reservations)
 
 if __name__ == "__main__":
     main()
