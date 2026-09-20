@@ -41,10 +41,9 @@ I also tested deleting a key that did not exist. I used pop() with a default val
 
 ## Discussion Board Reflection
 
-While completing this assignment, I learned more about how Python dictionaries work as hash tables and why they are useful for storing key-value pairs. A dictionary can quickly use a key to find the value connected to it instead of searching through every item one at a time. I also learned that dictionary keys must be unique, so assigning a new value to an existing key updates the value instead of creating a duplicate entry.
+While completing this assignment, I learned more about how Python dictionaries can be used like hash tables to store key-value pairs. Dictionaries make it possible to quickly find a value using its key, and keys must be unique. If an existing key is given a new value, the old value is updated instead of creating a duplicate.
 
-One challenge with hash tables is handling collisions. A collision happens when different keys are mapped to the same location in the hash table. Python handles these collisions internally, so when using a dictionary I do not have to manually decide where the item should be moved. Other hash table implementations can use methods such as chaining, linear probing, quadratic probing, or double hashing to handle collisions.
+One challenge I had was understanding how collisions are handled when different keys map to the same location in a hash table. I learned that Python handles these collisions internally, so I did not have to manage them myself in this program. 
 
-A real-world example would be a restaurant reservation system. The restaurant could use a customer's name or reservation number as the key and store information such as the party size as the value. During busy hours, the system could quickly locate a customer's reservation instead of searching through every reservation one at a time.
+A real-world example would be a restaurant reservation system. A customer's name or reservation number could be used as the key and the party size as the value. This would allow the restaurant to quickly find and update reservations during busy hours. Hash tables can perform insert, lookup, and delete operations in 0(1) average time, which makes them useful when information needs to be accessed quickly.
 
-The performance of the hash table also depends on how full the table becomes and how evenly the hash function distributes the keys. If too many items are stored in the same area, more collisions can occur and operations may take longer. A well-designed hash table can still provide O(1) average time for insert, lookup, and delete operations, which makes it useful for applications that need to find information quickly.
